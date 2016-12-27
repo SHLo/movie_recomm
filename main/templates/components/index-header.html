@@ -1,0 +1,33 @@
+{% load webpack_static from webpack_loader %}
+<header class="jumbotron">
+    <div class="container">
+	<div class="row">
+	    <div class="col-xs-12 col-sm-8">
+		<h1>
+		    Movie Recommender
+		</h1>
+		<p>
+		    Looking for a good movie but you don't know what to watch?
+		</p>
+	    </div>
+	    <div class="col-xs-12 col-sm-4">
+		<div class="btn-group count-btn">
+                    <button
+                        type="button"
+                        class="btn btn-default dropdown-toggle"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                    >
+			How many movies do you want? <span class="caret"></span>
+		    </button>
+		    <ul class="dropdown-menu">
+			<li><a>10</a></li>
+			<li><a>20</a></li>
+			<li><a>50</a></li>
+		    </ul>
+		</div>
+	    </div>
+	</div>
+    </div>
+</header>

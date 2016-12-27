@@ -1,0 +1,25 @@
+<nav class="navbar navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right index-nav">
+                {% if request.user.is_authenticated %}
+                <li>
+                    {% include 'components/greeting-msg.html' %}
+                </li>
+                <li>
+                    {% include 'components/logout-button.html' %}
+                </li>
+                {% else %}
+                <li>
+                    {% include 'components/login-form.html' %}
+                </li>
+                <li>
+                    {% include 'components/signup-button.html' %}
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
