@@ -1,0 +1,27 @@
+/* usage: webpack --config webpack.config.prod.js -p */
+
+var base = require('./webpack.config.base');
+var WebpackStrip = require('strip-loader');
+var webpack = require('webpack');
+var validate = require('webpack-validator');
+
+var prod = base;
+
+prod.devtool = 'source-map';
+prod.plugins = [
+      new webpack.optimize.UglifyJsPlugin({
+        compressor: {
+            warnings: false,
+        },
+        mangle: false,
+      }),
+  new webpack.optimize.OccurenceOrderPlugin(),
+  new webpack.DefinePlugin({
+    'process.env': {
+      'NODE_ENV': JSON.stringify('production'),
+    },
+  }),
+]
+.concat(prod.plugins);
+
+module.exports = validate(prod);
