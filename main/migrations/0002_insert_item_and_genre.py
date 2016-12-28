@@ -5,6 +5,8 @@ from __future__ import unicode_literals
 from django.db import migrations
 import datetime
 from dateutil.parser import parse
+from bs4 import BeautifulSoup
+from urllib2 import urlopen
 
 def insert_genre(apps, schema_editor):
     Genre = apps.get_model('main', 'Genre')
@@ -20,18 +22,28 @@ def insert_genre(apps, schema_editor):
 def insert_item(apps, schema_editor):
     Item = apps.get_model('main', 'Item')
     with open('./main/data/ml-100k/u.item') as item_file:
-        for line in item_file:
+        for i, line in enumerate(item_file):
+            print(i)
             line = unicode(line, errors='ignore')
             cells = line.split('|')
             try:
                 dt = parse(cells[2]).strftime('%Y-%m-%d')
             except:
                 dt = None
+            try:
+                imdb=cells[4].strip()
+                html_data = urlopen(imdb)
+                soup = BeautifulSoup(html_data, "html.parser")
+                img_src = soup.select('.poster img')[0]['src']
+            except:
+                img_src = ''
+
             item = Item(
                 id=cells[0].strip(),
                 title=cells[1].strip(),
                 release=dt,
                 imdb=cells[4].strip(),
+                img_src=img_src,
                 genre_unknown = cells[5].strip(),
                 genre_Action = cells[6].strip(),
                 genre_Adventure = cells[7].strip(),

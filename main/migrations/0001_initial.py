@@ -28,6 +28,7 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=256)),
                 ('release', models.DateField(blank=True, null=True)),
                 ('imdb', models.CharField(max_length=256)),
+                ('img_src', models.CharField(max_length=256)),
                 ('genre_unknown', models.BooleanField(default=False)),
                 ('genre_Action', models.BooleanField(default=False)),
                 ('genre_Adventure', models.BooleanField(default=False)),
