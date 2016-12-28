@@ -1,0 +1,19 @@
+<div class="container" ng-controller="ImgListCtrl">
+    <div class="row">
+        <div class="col-sm-3"
+            ng-repeat="item in items"
+        >
+            <figure class="crop">
+                <a class="btn btn-success" href="">Rate</a>
+                <img
+                    ng-src="[[ item.img_src ]]"
+                    alt="[[ item.title ]]"
+                    class="img-thumbnail"
+                >
+                <figcaption>
+                    [[ item.title ]]
+                </figcaption>
+            </figure>
+        </div>
+    </div>
+</div>

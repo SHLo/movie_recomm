@@ -18,6 +18,8 @@ class IndexView(TemplateView):
 
 class MovieListView(View):
     def get(self, request, *args, **kwargs):
+#        import pdb
+#        pdb.set_trace()
         cnt = request.GET.get('count', 10)
         def _get_recommened_movie_ids():
             avg_scores =  Rating.objects.values('item'). \
@@ -29,6 +31,8 @@ class MovieListView(View):
             ret = []
             for id in ids:
                 item = Item.objects.get(id=id)
+                if item.img_src == '':
+                    item.img_src = 'http://placehold.it/200x300'
                 item.genres = []
                 for k, v in item.__dict__.items():
                     if k.startswith('genre_') and v is True:
@@ -42,10 +46,10 @@ class MovieListView(View):
 
 
         ids = _get_recommened_movie_ids()
-        a = _get_movie_info(ids)
+        items = _get_movie_info(ids)
 
 
-        return JsonResponse({'items': a})
+        return JsonResponse({'items': items})
 
 
         #if request.user.is_authenticated():

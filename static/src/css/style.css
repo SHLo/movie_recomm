@@ -9,3 +9,18 @@
 li {
     margin: 5px;
 }
+
+.crop {
+    height: 400px;
+    width: 200px;
+    overflow: hidden;
+}
+
+.crop img {
+    height: 300px;
+    width: 200px;
+}
+
+.crop .btn {
+    width: 100%;
+}
