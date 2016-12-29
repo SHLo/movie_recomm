@@ -16,6 +16,7 @@ module.exports = {
             'angular-animate',
             'angular-cookies',
             'bootstrap-loader/extractstyles',
+            'angular-ui-bootstrap',
         ]
     },
     output: {

@@ -1,0 +1,33 @@
+<div>
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">[[ item.title ]]</h3>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <ul>
+            <li>
+                genre: [[ item.genres.join(', ') ]]
+            </li>
+            <li>
+                release date: [[ item.release ]]
+            </li>
+            <li>
+                IMDb: <a href="[[ item.imdb ]]" target="_blank">link</a>
+            </li>
+            <div class="rating-container">
+                <p>
+                    Give it a rating
+                </p>
+                <span
+                    uib-rating
+                    ng-model="rating"
+                    max="5"
+                >
+                </span>
+            </div>
+        </ul>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok(item)">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+    </div>
+</div>

@@ -1,16 +1,22 @@
-<div class="container" ng-controller="ImgListCtrl">
+<div class="container">
     <div class="row">
         <div class="col-sm-3"
             ng-repeat="item in items"
         >
             <figure class="crop">
-                <a class="btn btn-success" href="">Rate</a>
+                <a
+                    class="btn btn-success"
+                    href=""
+                    ng-click="openRatingModal(item)"
+                >Rate
+                </a>
                 <img
                     ng-src="[[ item.img_src ]]"
                     alt="[[ item.title ]]"
                     class="img-thumbnail"
                 >
                 <figcaption>
+                    [[ $index + 1]].
                     [[ item.title ]]
                 </figcaption>
             </figure>

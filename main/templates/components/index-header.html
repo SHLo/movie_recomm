@@ -22,9 +22,11 @@
 			How many movies do you want? <span class="caret"></span>
 		    </button>
 		    <ul class="dropdown-menu">
-			<li><a>10</a></li>
-			<li><a>20</a></li>
-			<li><a>50</a></li>
+                        <li ng-repeat="size in listSizes">
+                            <a ng-click="listMovies(size)">
+                                [[ size ]]
+                            </a>
+                        </li>
 		    </ul>
 		</div>
 	    </div>

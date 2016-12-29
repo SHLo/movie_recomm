@@ -20,7 +20,7 @@ class MovieListView(View):
     def get(self, request, *args, **kwargs):
 #        import pdb
 #        pdb.set_trace()
-        cnt = request.GET.get('count', 10)
+        cnt = request.GET.get('count', 20)
         def _get_recommened_movie_ids():
             avg_scores =  Rating.objects.values('item'). \
                           annotate(average_rating=Avg('rating'))

@@ -24,3 +24,8 @@ li {
 .crop .btn {
     width: 100%;
 }
+
+.rating-container {
+    text-align: center;
+    font-size: 1.5em;
+}

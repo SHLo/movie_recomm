@@ -1,4 +1,4 @@
-angular.module('movieRecommApp', [])
+angular.module('MovieRecommApp', ['ui.bootstrap'])
     .config(function ($interpolateProvider) {
         $interpolateProvider.startSymbol('[[');
         $interpolateProvider.endSymbol(']]');

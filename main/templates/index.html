@@ -7,7 +7,7 @@
         {% render_bundle 'vendor' 'css' %}
         {% render_bundle 'main' 'css' %}
     </head>
-    <body ng-app="movieRecommApp">
+    <body ng-app="MovieRecommApp" ng-controller="MainCtrl">
         {% include 'components/top-nav.html' %}
         {% include 'components/index-header.html' %}
         {% include 'components/movie-list.html' %}
