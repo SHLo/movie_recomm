@@ -74,7 +74,7 @@ class MovieListView(View):
             avg_scores =  Rating.objects.values('item'). \
                           annotate(average_rating=Avg('rating'))
             top_items = avg_scores.order_by('-average_rating', 'item')[:cnt]
-            return {item['item'] for item in top_items}
+            return [item['item'] for item in top_items]
 
 
 
