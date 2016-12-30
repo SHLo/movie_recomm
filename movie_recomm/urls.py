@@ -19,8 +19,8 @@ from django.contrib.auth.views import login, logout
 from main.views import IndexView
 from main.views import MovieListView
 from main.views import RatingView
+from main.forms import UserCreateForm
 from django.views.generic.edit import CreateView
-from django.contrib.auth.forms import UserCreationForm
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^index/$', IndexView.as_view(), name='index'),
     url(r'^register/$', CreateView.as_view(
         template_name='registration/register.html',
-        form_class=UserCreationForm,
+        form_class=UserCreateForm,
         success_url='/index/'
     )),
     url('^accounts/', include('django.contrib.auth.urls')),

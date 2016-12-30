@@ -5,11 +5,11 @@
     <title>Registration</title>
     <form method="post">
         {% csrf_token %}
-        {{ form }}
+        {{ form.as_p }}
         <input type="submit" value="register" />
+        <a href="/index/">home</a>
     </form>
 </head>
 <body>
-    
 </body>
 </html>

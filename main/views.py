@@ -75,5 +75,3 @@ class MovieListView(View):
 
 
         #if request.user.is_authenticated():
-
-
