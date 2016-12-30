@@ -51,7 +51,7 @@ class MovieListView(View):
         def _get_recommened_movie_ids():
             avg_scores =  Rating.objects.values('item'). \
                           annotate(average_rating=Avg('rating'))
-            top_items = avg_scores.order_by('-average_rating')[:cnt]
+            top_items = avg_scores.order_by('-average_rating', 'item')[:cnt]
             return [item['item'] for item in top_items]
 
         def _get_movie_info(ids):
