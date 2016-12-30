@@ -17,7 +17,7 @@ def insert_rating(apps, schema_editor):
                 pdb.set_trace()
                 continue
             rating = Rating(
-                user=user.strip(),
+                user='dummy' + user.strip(),
                 item=item,
                 rating=rating.strip(),
                 timestamp=timestamp.strip(),
