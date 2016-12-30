@@ -10,6 +10,20 @@ from django.core import serializers
 import json
 import time
 
+def get_movie_info(ids):
+    ret = []
+    for id in ids:
+        item = Item.objects.get(id=id)
+        if item.img_src == '':
+            item.img_src = 'http://placehold.it/200x300'
+        item.genres = []
+        for k, v in item.__dict__.items():
+            if k.startswith('genre_') and v is True:
+                item.genres.append(k[len('genre_'):])
+        item_dict = item.__dict__
+        del item_dict['_state']
+        ret.append(item_dict)
+    return ret
 # Create your views here.
 class IndexView(TemplateView):
     template_name = 'index.html'
@@ -38,10 +52,18 @@ class RatingView(View):
         return HttpResponse(status=200)
 
 
-#class HistoryListView(View):
-#    def get(self, request, *args, **kwargs):
-#        def _get_history_movie_ids():
-#            user = 
+class HistoryListView(View):
+    def get(self, request, *args, **kwargs):
+        def _get_history_movie_ids():
+            user = request.user.id
+            ratings = Rating.objects.filter(user=user)
+            ids = {rating.item.id for rating in ratings}
+            return ids
+
+        ids = _get_history_movie_ids()
+        items = get_movie_info(ids)
+
+        return JsonResponse({'items': items})
 
 class MovieListView(View):
     def get(self, request, *args, **kwargs):
@@ -52,28 +74,14 @@ class MovieListView(View):
             avg_scores =  Rating.objects.values('item'). \
                           annotate(average_rating=Avg('rating'))
             top_items = avg_scores.order_by('-average_rating', 'item')[:cnt]
-            return [item['item'] for item in top_items]
+            return {item['item'] for item in top_items}
 
-        def _get_movie_info(ids):
-            ret = []
-            for id in ids:
-                item = Item.objects.get(id=id)
-                if item.img_src == '':
-                    item.img_src = 'http://placehold.it/200x300'
-                item.genres = []
-                for k, v in item.__dict__.items():
-                    if k.startswith('genre_') and v is True:
-                        item.genres.append(k[len('genre_'):])
-                item_dict = item.__dict__
-                del item_dict['_state']
-                ret.append(item_dict)
-            return ret
 
 
 
 
         ids = _get_recommened_movie_ids()
-        items = _get_movie_info(ids)
+        items = get_movie_info(ids)
 
 
         return JsonResponse({'items': items})

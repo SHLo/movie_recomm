@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.contrib.auth.views import login, logout
 from main.views import IndexView
 from main.views import MovieListView
+from main.views import HistoryListView
 from main.views import RatingView
 from main.forms import UserCreateForm
 from django.views.generic.edit import CreateView
@@ -34,5 +35,6 @@ urlpatterns = [
     )),
     url('^accounts/', include('django.contrib.auth.urls')),
     url('^list/$', MovieListView.as_view()),
+    url('^history/$', HistoryListView.as_view()),
     url('^rating/$', RatingView.as_view()),
 ]
