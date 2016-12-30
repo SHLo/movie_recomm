@@ -15,3 +15,6 @@ class UserCreateForm(UserCreationForm):
         help_texts = {
             'username': ''
         }
+        labels = {
+            'username': 'Email'
+        }
