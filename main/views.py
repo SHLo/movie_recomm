@@ -5,7 +5,10 @@ from main.models import Rating
 from main.models import Item
 from django.db.models import Avg
 from django.http import JsonResponse
+from django.http import HttpResponse
 from django.core import serializers
+import json
+import time
 
 # Create your views here.
 class IndexView(TemplateView):
@@ -14,6 +17,25 @@ class IndexView(TemplateView):
     def get_context_data(self, **kwargs):
         pass
 
+
+class RatingView(View):
+    def post(self, request, *args, **kwargs):
+        try:
+            data = json.loads(request.body)
+            item = data['item']
+            rating = data['rating']
+            ts = int(time.time())
+
+            rating_record = Rating(
+                user='aaa',
+                item=Item.objects.get(id=item),
+                rating=rating,
+                timestamp=ts
+            )
+            rating_record.save()
+        except:
+            return HttpResponse(status=500)
+        return HttpResponse(status=200)
 
 
 class MovieListView(View):

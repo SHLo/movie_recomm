@@ -9,21 +9,20 @@ angular.module('MovieRecommApp')
             '$uibModal',
             'restSrv',
             function ($scope, $http, $uibModal, restSrv) {
-                console.log('scope: ', $scope);
+                $scope.listSizes = [
+                    20,
+                    60,
+                    100,
+                ]
+                $scope.historyMode = false;
+
                 $scope.listMovies = function (count) {
                     restSrv.listMovies(count)
                     .success(function (resp) {
                         console.log(resp);
                         $scope.items = resp.items;
                     });
-                }
-
-                $scope.listSizes = [
-                    20,
-                    60,
-                    100,
-                ]
-
+                };
 
                 $scope.openRatingModal = function (item) {
                     console.log(item);
@@ -34,15 +33,32 @@ angular.module('MovieRecommApp')
                             resolve: {
                                 item: function () {
                                     return item;
-                                }
-                            },
-
+                                },
+                                historyMode: $scope.historyMode
+                            }
                         }
                     );
                     modalInst.result.then(function (rating) {
+                        if (typeof rating === 'undefined') return;
+                        $http.post(
+                            '/rating/',
+                            {item: item.id, rating: rating}
+                        )
+                            .success(function (resp) {
+                                console.log('post suc:', resp);
+                            })
+                            .error(function (resp) {
+                                console.error('post err:', resp);
+                            })
+                        ;
+
                         console.log(item.id, rating);
                     });
                 };
+
+                $scope.onModeChange = function () {
+                    console.log('mode: ', $scope.historyMode);
+                }
 
                 $scope.listMovies(20);
             }
@@ -53,9 +69,11 @@ angular.module('MovieRecommApp')
             '$scope',
             '$uibModalInstance',
             'item',
-            function ($scope, $uibModalInstance, item) {
+            'historyMode',
+            function ($scope, $uibModalInstance, item, historyMode) {
                 $scope.item = item;
                 $scope.ok = function () {
+                    console.log('mode: ', historyMode);
                     $uibModalInstance.close($scope.rating);
                 };
                 $scope.cancel = function () {

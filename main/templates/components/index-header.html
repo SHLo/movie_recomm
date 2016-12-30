@@ -11,7 +11,18 @@
 		</p>
 	    </div>
 	    <div class="col-xs-12 col-sm-4">
-		<div class="btn-group count-btn">
+                <switch
+                    ng-model="historyMode"
+                    class="green wide"
+                    ng-change="onModeChange"
+                    on="history"
+                    off="new"
+                >
+                </switch>
+                <div
+                    class="btn-group count-btn"
+                    ng-if="!historyMode"
+                >
                     <button
                         type="button"
                         class="btn btn-default dropdown-toggle"

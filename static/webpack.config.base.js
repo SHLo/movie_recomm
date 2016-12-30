@@ -17,6 +17,8 @@ module.exports = {
             'angular-cookies',
             'bootstrap-loader/extractstyles',
             'angular-ui-bootstrap',
+            'angular-ui-switch/angular-ui-switch.min.css',
+            'angular-ui-switch/angular-ui-switch.min.js',
         ]
     },
     output: {
