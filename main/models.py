@@ -7,7 +7,7 @@ from django.db import models
 class Item(models.Model):
     id = models.CharField(max_length=128, primary_key=True)
     title = models.CharField(max_length=256)
-    release = models.DateField(blank=True)
+    release = models.DateField(blank=True, null=True)
     imdb = models.CharField(max_length=256)
     img_src = models.CharField(max_length=256)
     genre_unknown = models.BooleanField(default=False)
