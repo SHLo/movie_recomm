@@ -27,7 +27,7 @@ class RatingView(View):
             ts = int(time.time())
 
             rating_record = Rating(
-                user='aaa',
+                user=request.user.id,
                 item=Item.objects.get(id=item),
                 rating=rating,
                 timestamp=ts
@@ -37,6 +37,11 @@ class RatingView(View):
             return HttpResponse(status=500)
         return HttpResponse(status=200)
 
+
+#class HistoryListView(View):
+#    def get(self, request, *args, **kwargs):
+#        def _get_history_movie_ids():
+#            user = 
 
 class MovieListView(View):
     def get(self, request, *args, **kwargs):
