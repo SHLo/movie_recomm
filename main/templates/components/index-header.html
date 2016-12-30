@@ -11,6 +11,7 @@
 		</p>
 	    </div>
 	    <div class="col-xs-12 col-sm-4">
+                {% if request.user.is_authenticated %}
                 <switch
                     ng-model="historyMode"
                     class="green wide"
@@ -19,6 +20,7 @@
                     off="new"
                 >
                 </switch>
+                {% endif %}
                 <div
                     class="btn-group count-btn"
                     ng-if="!historyMode"
