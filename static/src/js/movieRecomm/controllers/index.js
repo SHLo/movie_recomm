@@ -14,12 +14,15 @@ angular.module('MovieRecommApp')
                     60,
                     100,
                 ]
-
                 $scope.historyMode = false;
-                $scope.listMovies = listMovies;
-                $scope.auth = window.auth;
 
-
+                $scope.listMovies = function (count) {
+                    restSrv.listMovies(count)
+                    .success(function (resp) {
+                        console.log(resp);
+                        $scope.items = resp.items;
+                    });
+                };
 
                 $scope.openRatingModal = function (item) {
                     console.log(item);
@@ -55,29 +58,9 @@ angular.module('MovieRecommApp')
 
                 $scope.onModeChange = function () {
                     console.log('mode: ', $scope.historyMode);
-                    if ($scope.historyMode) listHistory();
-                    else listMovies(20);
-                };
-
-                listMovies(20);
-
-                function listHistory () {
-                    restSrv.listHistory()
-                        .success(function (resp) {
-                            console.log(resp);
-                            $scope.items = resp.items;
-                        })
-                    ;
                 }
 
-                function listMovies (count) {
-                    restSrv.listMovies(count)
-                        .success(function (resp) {
-                            console.log(resp);
-                            $scope.items = resp.items;
-                        })
-                    ;
-                }
+                $scope.listMovies(20);
             }
         ]
     )
@@ -89,9 +72,6 @@ angular.module('MovieRecommApp')
             'historyMode',
             function ($scope, $uibModalInstance, item, historyMode) {
                 $scope.item = item;
-                $scope.historyMode = historyMode;
-                $scope.rating = item.rating
-                $scope.auth = window.auth;
                 $scope.ok = function () {
                     console.log('mode: ', historyMode);
                     $uibModalInstance.close($scope.rating);

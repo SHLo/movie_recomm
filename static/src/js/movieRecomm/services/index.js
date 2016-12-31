@@ -9,12 +9,5 @@ angular.module('MovieRecommApp')
                 })
             ;
         }
-        this.listHistory = function () {
-            return $http.get('/history/')
-                .error(function (resp) {
-                    console.error(resp);
-                })
-            ;
-        }
     }])
 ;

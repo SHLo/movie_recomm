@@ -12,10 +12,8 @@
         {% include 'components/top-nav.html' %}
         {% include 'components/index-header.html' %}
         {% include 'components/movie-list.html' %}
+
         {% render_bundle 'vendor' 'js' %}
         {% render_bundle 'main' 'js' %}
-         <script>
-            window.auth = {{ auth }};
-        </script>
     </body>
 </html>
