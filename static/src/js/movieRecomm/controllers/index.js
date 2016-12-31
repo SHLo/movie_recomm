@@ -15,8 +15,13 @@ angular.module('MovieRecommApp')
 		    100,
 		]
 		$scope.historyMode = false;
-		$scope.listMovies = listMovies;
 		$scope.auth = window.auth;
+                $currentCount = 20;
+
+                $scope.setCurrentCount = function (cnt) {
+                    $scope.currentCount = cnt;
+                    listMovies(cnt);
+                };
 
 		$scope.openRatingModal = function (item) {
 		    console.log(item);
@@ -40,6 +45,7 @@ angular.module('MovieRecommApp')
 			)
 			    .success(function (resp) {
 				console.log('post suc:', resp);
+                                listMovies($scope.currentCount);
 			    })
 			    .error(function (resp) {
 				console.error('post err:', resp);
@@ -56,7 +62,7 @@ angular.module('MovieRecommApp')
 		    else listMovies(20);
 		};
 
-		$scope.listMovies(20);
+		listMovies(20);
 
 		function listHistory () {
 		    restSrv.listHistory()
