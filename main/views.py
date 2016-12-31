@@ -24,6 +24,14 @@ def get_movie_info(ids):
         del item_dict['_state']
         ret.append(item_dict)
     return ret
+
+def get_history_movie_id_score(request):
+    user = request.user.id
+    ratings = Rating.objects.filter(user=user)
+    ids = [rating.item.id for rating in ratings]
+    scores = [rating.rating for rating in ratings]
+    return ids, scores
+
 # Create your views here.
 class IndexView(TemplateView):
     template_name = 'index.html'
@@ -57,19 +65,13 @@ class RatingView(View):
 
 class HistoryListView(View):
     def get(self, request, *args, **kwargs):
-        def _get_history_movie_id_score():
-            user = request.user.id
-            ratings = Rating.objects.filter(user=user)
-            ids = [rating.item.id for rating in ratings]
-            scores = [rating.rating for rating in ratings]
-            return ids, scores
-
-        ids, scores = _get_history_movie_id_score()
+        ids, scores = get_history_movie_id_score(request)
         items = get_movie_info(ids)
         for item, score in zip(items, scores):
             item['rating'] = score
 
         return JsonResponse({'items': items})
+
 
 class MovieListView(View):
     def get(self, request, *args, **kwargs):
@@ -77,20 +79,13 @@ class MovieListView(View):
 #        pdb.set_trace()
         cnt = request.GET.get('count', 20)
         def _get_recommened_movie_ids():
-            avg_scores =  Rating.objects.values('item'). \
+            excluded_items, _ = get_history_movie_id_score(request)
+            avg_scores =  Rating.objects.exclude(item__in=excluded_items).values('item'). \
                           annotate(average_rating=Avg('rating'))
             top_items = avg_scores.order_by('-average_rating', 'item')[:cnt]
             return [item['item'] for item in top_items]
 
-
-
-
-
         ids = _get_recommened_movie_ids()
         items = get_movie_info(ids)
 
-
         return JsonResponse({'items': items})
-
-
-        #if request.user.is_authenticated():
