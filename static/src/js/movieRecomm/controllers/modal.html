@@ -13,21 +13,26 @@
             <li>
                 IMDb: <a href="[[ item.imdb ]]" target="_blank">link</a>
             </li>
-            <div class="rating-container">
-                <p>
+            <div class="rating-container" ng-if="auth">
+                <p ng-if="!historyMode">
                     Give it a rating
+                </p>
+                <p ng-if="historyMode">
+                    Your rating
                 </p>
                 <span
                     uib-rating
                     ng-model="rating"
                     max="5"
+                    read-only="historyMode"
                 >
                 </span>
             </div>
         </ul>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" type="button" ng-click="ok(item)">OK</button>
-        <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        <button class="btn btn-primary" type="button" ng-click="ok(item)" ng-if="auth && !historyMode">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()" ng-if="auth && !historyMode">Cancel</button>
+        <button class="btn btn-info" type="button" ng-click="cancel()" ng-if="!auth || historyMode">Close</button>
     </div>
 </div>

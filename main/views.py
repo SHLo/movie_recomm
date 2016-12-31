@@ -29,7 +29,10 @@ class IndexView(TemplateView):
     template_name = 'index.html'
 
     def get_context_data(self, **kwargs):
-        pass
+        context = {}
+        context['auth'] = int(self.request.user.is_authenticated())
+
+        return context
 
 
 class RatingView(View):
@@ -54,14 +57,17 @@ class RatingView(View):
 
 class HistoryListView(View):
     def get(self, request, *args, **kwargs):
-        def _get_history_movie_ids():
+        def _get_history_movie_id_score():
             user = request.user.id
             ratings = Rating.objects.filter(user=user)
-            ids = {rating.item.id for rating in ratings}
-            return ids
+            ids = [rating.item.id for rating in ratings]
+            scores = [rating.rating for rating in ratings]
+            return ids, scores
 
-        ids = _get_history_movie_ids()
+        ids, scores = _get_history_movie_id_score()
         items = get_movie_info(ids)
+        for item, score in zip(items, scores):
+            item['rating'] = score
 
         return JsonResponse({'items': items})
 
