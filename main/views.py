@@ -29,7 +29,10 @@ class IndexView(TemplateView):
     template_name = 'index.html'
 
     def get_context_data(self, **kwargs):
-        pass
+        context = {}
+        context['auth'] = int(self.request.user.is_authenticated())
+
+        return context
 
 
 class RatingView(View):

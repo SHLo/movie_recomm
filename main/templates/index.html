@@ -15,5 +15,8 @@
 
         {% render_bundle 'vendor' 'js' %}
         {% render_bundle 'main' 'js' %}
+        <script>
+            window.auth = {{ auth }};
+        </script>
     </body>
 </html>
