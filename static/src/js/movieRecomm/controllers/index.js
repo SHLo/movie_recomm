@@ -15,14 +15,8 @@ angular.module('MovieRecommApp')
                     100,
                 ]
                 $scope.historyMode = false;
-
-                $scope.listMovies = function (count) {
-                    restSrv.listMovies(count)
-                    .success(function (resp) {
-                        console.log(resp);
-                        $scope.items = resp.items;
-                    });
-                };
+		$scope.listMovies = listMovies;
+                $scope.auth = window.auth;
 
                 $scope.openRatingModal = function (item) {
                     console.log(item);
@@ -58,9 +52,29 @@ angular.module('MovieRecommApp')
 
                 $scope.onModeChange = function () {
                     console.log('mode: ', $scope.historyMode);
-                }
+		    if ($scope.historyMode) listHistory();
+		    else listMovies(20);
+                };
 
                 $scope.listMovies(20);
+
+		function listHistory () {
+                    restSrv.listHistory()
+                        .success(function (resp) {
+                            console.log(resp);
+                            $scope.items = resp.items;
+                        })
+                    ;
+                }
+
+                function listMovies (count) {
+                    restSrv.listMovies(count)
+                        .success(function (resp) {
+                            console.log(resp);
+                            $scope.items = resp.items;
+                        })
+                    ;
+                }
             }
         ]
     )
@@ -74,6 +88,7 @@ angular.module('MovieRecommApp')
                 $scope.item = item;
                 $scope.ok = function () {
                     console.log('mode: ', historyMode);
+                    console.log('rating: ', $scope.rating);
                     $uibModalInstance.close($scope.rating);
                 };
                 $scope.cancel = function () {

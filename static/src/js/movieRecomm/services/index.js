@@ -8,6 +8,14 @@ angular.module('MovieRecommApp')
                     console.error(resp);
                 })
             ;
-        }
+        };
+
+        this.listHistory = function () {
+            return $http.get('/history/')
+                .error(function (resp) {
+                    console.error(resp);
+                })
+            ;
+        };
     }])
 ;
