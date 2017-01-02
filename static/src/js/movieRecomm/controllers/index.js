@@ -6,9 +6,11 @@ angular.module('MovieRecommApp')
 	[
 	    '$scope',
 	    '$http',
+            '$interval',
 	    '$uibModal',
 	    'restSrv',
-	    function ($scope, $http, $uibModal, restSrv) {
+	    function ($scope, $http, $interval,  $uibModal, restSrv) {
+                var stop;
 		$scope.listSizes = [
 		    20,
 		    60,
@@ -16,14 +18,15 @@ angular.module('MovieRecommApp')
 		]
 		$scope.historyMode = false;
 		$scope.auth = window.auth;
-                $currentCount = 20;
+                $scope.currentCount = 20;
 
                 $scope.setCurrentCount = function (cnt) {
                     $scope.currentCount = cnt;
-                    listMovies(cnt);
+                    listMovies();
                 };
 
 		$scope.openRatingModal = function (item) {
+                    clearInterval();
 		    console.log(item);
 		    var modalInst = $uibModal.open(
 			{
@@ -38,6 +41,7 @@ angular.module('MovieRecommApp')
 			}
 		    );
 		    modalInst.result.then(function (rating) {
+                        startInterval();
 			if (typeof rating === 'undefined') return;
 			$http.post(
 			    '/rating/',
@@ -49,38 +53,66 @@ angular.module('MovieRecommApp')
 			    })
 			    .error(function (resp) {
 				console.error('post err:', resp);
-			    })
+                            })
 			;
 
 			console.log(item.id, rating);
-		    });
+                    }, function () {
+                        startInterval();
+                    });
 		};
 
 		$scope.onModeChange = function () {
 		    console.log('mode: ', $scope.historyMode);
-		    if ($scope.historyMode) listHistory();
-		    else listMovies(20);
+                    if ($scope.historyMode) {
+                        clearInterval();
+                        listHistory();
+                    }
+                    else {
+                        listMovies();
+                        startInterval();
+                    }
 		};
 
-		listMovies(20);
+		listMovies();
+                startInterval();
 
 		function listHistory () {
 		    restSrv.listHistory()
 			.success(function (resp) {
 			    console.log(resp);
+                            if (!$scope.historyMode) return;
 			    $scope.items = resp.items;
 			})
 		    ;
 		}
 
-		function listMovies (count) {
-		    restSrv.listMovies(count)
+		function listMovies () {
+		    restSrv.listMovies($scope.currentCount)
 			.success(function (resp) {
 			    console.log(resp);
+                            if ($scope.historyMode) return;
 			    $scope.items = resp.items;
 			})
 		    ;
 		}
+
+                function startInterval () {
+                    if (angular.isDefined(stop)) return;
+                    if ($scope.historyMode) return;
+
+                    stop = $interval(
+                        listMovies.bind(null, $scope.currentCount),
+                        60000
+                    );
+                }
+
+                function clearInterval () {
+                    if (angular.isDefined(stop)) {
+                        $interval.cancel(stop);
+                        stop = undefined;
+                    }
+                }
 	    }
 	]
     )
