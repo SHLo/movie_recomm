@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django_pandas.managers import DataFrameManager
 
 # Create your models here.
 
@@ -36,6 +37,8 @@ class Rating(models.Model):
     item = models.ForeignKey(Item)
     rating = models.IntegerField()
     timestamp = models.CharField(max_length=64)
+
+    objects = DataFrameManager()
 
 
 class Genre(models.Model):

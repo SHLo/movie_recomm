@@ -9,6 +9,7 @@ from django.http import HttpResponse
 from django.core import serializers
 import json
 import time
+import graphlab
 
 def get_movie_info(ids):
     ret = []
@@ -78,14 +79,27 @@ class MovieListView(View):
 #        import pdb
 #        pdb.set_trace()
         cnt = request.GET.get('count', 20)
+        all_items = [item.id for item in Item.objects.all()]
+        excluded_items, _ = get_history_movie_id_score(request)
         def _get_recommened_movie_ids():
-            excluded_items, _ = get_history_movie_id_score(request)
-            avg_scores =  Rating.objects.exclude(item__in=excluded_items).values('item'). \
-                          annotate(average_rating=Avg('rating'))
-            top_items = avg_scores.order_by('-average_rating', 'item')[:cnt]
-            return [item['item'] for item in top_items]
+            if not request.user.is_authenticated():
+                avg_scores =  Rating.objects. \
+                    exclude(item__in=excluded_items).values('item'). \
+                    annotate(average_rating=Avg('rating'))
+                top_items = avg_scores. \
+                    order_by('-average_rating', 'item')[:cnt]
+                return [item['item'] for item in top_items]
+            else:
+                cf_model = graphlab.load_model('cf_model')
+                recomm = cf_model.recommend(
+                    users=[request.user.id],
+                    k=int(cnt),
+                    items=list(set(all_items) - set(excluded_items))
+                )
+                return recomm['item']
 
         ids = _get_recommened_movie_ids()
         items = get_movie_info(ids)
+
 
         return JsonResponse({'items': items})
