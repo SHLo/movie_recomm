@@ -32,7 +32,7 @@ class ScheduleTimer(threading.Thread):
 	    qs = Rating.objects.all()
 	    df = qs.to_dataframe(verbose=False)
 	    train_data = graphlab.SFrame(df)
-	    item_sim_model = graphlab.item_similarity_recommender.create(train_data, user_id='user', item_id='item', target='rating', similarity_type='pearson')
+	    item_sim_model = graphlab.item_similarity_recommender.create(train_data, user_id='user', item_id='item', target='rating', similarity_type='cosine')
             item_sim_model.save('cf_model')
 
             time.sleep(self._run_time)
