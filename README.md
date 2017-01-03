@@ -20,3 +20,13 @@ change to the root directory, $ python manage.py runserver;
 1. register an account by email and start rating movies
 2. click the switch button to check your rating history
 3. the recommender app combines your rating with others to generate a recommendation list for you
+
+## Graphlab collaborative filtering library
+
+Reasons to use it:<br>
+1. Well documented, easy to learn<br>
+2. various model types and evaluation comparison API are provided to help analyzing<br>
+
+How I use it:<br>
+1. kickoff an independant thread to do model building periodically, save the results in local folder 'cf_model'<br>
+2. while recieveing get requests from frontend, evoke graphlab recommend API to generate recommendation list based on the model built in 'cf_model' file folder
