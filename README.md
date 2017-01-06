@@ -1,7 +1,7 @@
 # movie_recomm
 A fullstack app for movie recommendation based on collaborative filtering technique
 
-## Installation
+## Installation (developed under macOS Sierra 10.12.2)
 ```sh
 1. $ git clone https://github.com/SHLo/movie_recomm.git
 2. create a virtual environment for python 2.7 (recommended)
