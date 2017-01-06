@@ -8,7 +8,8 @@ A fullstack app for movie recommendation based on collaborative filtering techni
 3. $ pip install -r requirements.txt; pip install --upgrade --no-cache-dir https://get.graphlab.com/GraphLab-Create/2.1/shlo.sam@gmail.com/6618-0B15-97AF-BE03-F5B0-B01A-DDC6-5FBF/GraphLab-Create-License.tar.gz;
 4. $ cd static; npm install; npm run build; (node 4.4.7)
 5. launch a mysql server on localhost:3306, create a DB named "MOVIE_RECOMM", usernmae: "root", password: "password", (database settings can be adjusted in movie_recomm/setings.py)
-6. change to the root directory, $ python manage.py migrate main; python manage.py migrate; (it may take a while for movie poster image crawling)
+6.a change to the root directory, migrate the whole DB by running bash "mysql -u root -ppassword -h 127.0.0.1 -P 3306 MOVIE_RECOMM < MOVIE_RECOMM.sql"
+6.b or you can migrate DB step by step: $ python manage.py migrate main; python manage.py migrate; (it may take a while for movie poster image crawling)
 ```
 
 ## Usage
